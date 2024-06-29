@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑相册</title>
+</head>
+<body>
+    {% load static %}
+    <center>
+        <h3>在线相册</h3>
+        <a href="{% url 'index' %}">回到首页</a> |
+        <a href="{% url 'photoindex' 1 %}">浏览相册</a> |
+        <a href="{% url 'upload' %}">添加图片</a>
+        <hr/>
+        <h2>编辑相册</h2>
+        <form action="{% url 'doedit' user.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table >
+                <tr>
+                    <td>标题：</td>
+                    <td><input type="text" name="title" value="{{user.title}}"></td>
+                </tr>
+                <tr>
+                    <td>图片：</td>
+                    <td><input type="file" name="mypic"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="上传">
+                    </td>
+                </tr>
+            </table>
+        </form><br>
+        <img src="{% static 'pic/' %}{{user.photoname}} "  style="width: 400px;">
+    </center>
+</body>
+</html>

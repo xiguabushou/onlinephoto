@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+ db:
+    image: mysql:8.0
+    environment:
+       - MYSQL_ROOT_PASSWORD=123456 # 数据库密码
+       - MYSQL_DATABASE=photo # 数据库名称
+    ports:
+       - "3306:3306" # 与配置文件保持一致
+    volumes:
+       - ./compose:/var/lib/mysql
+       - ./mysqlconfig/my.conf:/etc/my.cof
+       
+ web:
+    build: ./ # 使用本目录下的Dockerfile
+    volumes:
+       - /home/onlinephoto:/var/www/html/myweb # 挂载项目代码
+    command: sh start.sh
+    ports:
+       - "80:8000" # 与配置文件保持一致
+    links:
+       - db
+    depends_on: # 依赖关系
+       - db
+    tty: true
+    stdin_open: true
+   

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线相册</title>
+</head>
+<body>
+    <center>
+        {% load static %}
+        <h3>在线相册</h3>
+        <a href="{% url 'index' %}">回到首页</a> |
+        <a href="{% url 'photoindex' 1 %}">浏览相册</a> |
+        <a href="{% url 'upload' %}">添加图片</a>
+        <hr/>
+        <form action="{% url 'photoindex' 1 %}" method="get">
+            标题：<input type="text" size="10" name="keyword" value="{{kw}}">
+            <script>
+                var kw = "{{kw}}";
+                if (kw !== "None") {
+                  document.querySelector('input[name="keyword"]').value = kw;
+                } else {
+                  document.querySelector('input[name="keyword"]').value = "";
+                }
+              </script>
+            <input type="submit" value="搜索">
+        </form>
+        <br>
+        <table width="800" border="1"  cellspacing="0">
+            <tr>
+                <th>序号</th>
+                <th>标题</th>
+                <th>图片</th>
+                <th>操作时间</th>
+                <th>操作</th>
+            </tr>
+            {% for user in userslist %}
+                <tr>
+                    <td style="text-align: center;">{{forloop.counter}}</td>
+                    <td>{{user.title}}</td>
+                    <td style="text-align: center;">
+                     <a href="{% static 'pic/' %}{{user.photoname}}" target="_blank">  
+                        <img src="{% static 'pic/S_' %}{{user.photoname}}"  style="width: 100px;" >
+                    </a> </td>
+                    <td>{{user.addtime}}</td>
+                    <td style="text-align: center;">
+                        <a href="{% url 'editpage' user.id %}">编辑 </a>&nbsp;
+                        <a href="{% url 'delphoto' user.id %}" onclick="return confirm('确定要删除照片吗？')">删除</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <a href="{% url 'photoindex' pIndex|add:-1 %}{{mywhere}}">上一页</a>&nbsp; &nbsp;
+        <a href="{% url 'photoindex' 1 %}{{mywhere}}">首页</a>&nbsp; &nbsp;
+        {% for p in rlist%}
+        {% if p == pIndex %}
+        <a style="color: blue;">第{{p}}页</a>&nbsp; &nbsp;
+        {% endif %}
+        {% endfor %}
+        <a style="color: blue;">共{{ all }}页</a>&nbsp; &nbsp;
+        <a href="{% url 'photoindex' all %}{{mywhere}}">末页</a>&nbsp; &nbsp;
+        <a href="{% url 'photoindex' pIndex|add:1 %}{{mywhere}}">下一页</a>
+    </center>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传</title>
+</head>
+<body>
+    <center>
+    <h3>在线相册</h3>
+    <a href="{% url 'index' %}">回到首页</a> |
+    <a href="{% url 'photoindex' 1 %}">浏览相册</a> |
+    <a href="{% url 'upload' %}">添加图片</a>
+    <hr/>
+    <h2>文件上传</h2>
+    <form action="{% url 'doupload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table >
+            <tr>
+                <td>标题：</td>
+                <td><input type="text" name="title"></td>
+            </tr>
+            <tr>
+                <td>图片：</td>
+                <td><input type="file" name="pic"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="上传">
+                    <input type="reset" value="重置">
+                </td>
+            </tr>
+        </table>
+    </form><br>
+    </center>
+</body>
+</html>
